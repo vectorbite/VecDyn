@@ -1,0 +1,33 @@
+Fields,Description,Variable codes
+DataSetID,ID of the particular row of the table,To be automatically assigned by the database.
+*Latitude,Of the location in decimal degrees.,In units of °N (WGS 1984).
+*Longitude,Of the location in decimal degrees.,In units of °E (WGS 1984).
+*CoordinateIdentificationMethod,The method used to identify the Latitude and Longitude coordinates.,Allowed keywords: - GPS receiver - Nearby landmark - Country's geographic centre - …
+Altitude,Of the location.,In units of metres.
+*Area,Area over which population density was estimated.,In units of ha.
+*Location,Nearest landmark.,"E.g., Umoja village, Kenya"
+Country,Of the location.,
+Continent,Of the location.,Allowed keywords: - Europe - Africa - Asia - South America - North America - Australia
+*AbundRaw,Abundance value in units of AbundUnitsRaw.,
+*AbundUnitsRaw,Units in which AbundRaw values are reported.,
+*SamplingMethod,Specific sampling method/equipment used.,
+*SamplingMethodCategory,Broad category of sampling methods to which SamplingMethod belongs.,Allowed keywords: - light trap - paper trap - pit trap - ...
+*SamplingUnits,The entity observed.,Examples include: - adults - egg masses - ...
+*SamplingProtocol,How AbundRaw were sampled.,Allowed keywords: - count - count (millions) - harvest - index of abundance - index of territories - leaf area - mean count - percent cover - sample
+SourceDimension,The dimension of source table or graph.,Allowed keywords: - area coverage - biomass - catch - count - count (estimated) - density - density (estimated) - index - index – CPUE - mean area coverage - mean biomass -mean concentration - mean count - percent count - relative density - transformed biomass - transformed count - transformed density
+*SamplingFrequency,Approximate number of samples per year.,
+*SamplingEffort,"The sampling effort. Usually a measure of temporal effort but also census, density, harvest.",
+SpatialDensity,The spatial unit of a density.,
+SourceTransform,Any transformation of the data.,
+SourceTransformReference,Details of the reference value of any data transformation.,Allowed keywords: - base year - log - none - proportion - x1000 lbs
+Season,The local season when AbundRaw values were collected.,Allowed keywords: - Dry - Short rainy - Long rainy - ...
+*TimeStart,The date and time when AbundRaw values were first collected.,"In ISO 8601 format: yyyy-mm-ddThh:mm:ss where T indicates that a time value follows. E.g., for the 4th of August 1990, at 02:15:20: 1990-08-04T02:15:20 Unknown information can be coded as NA, e.g.: 1990-08-NATNA:NA:NA"
+*TimeEnd,The date and time when AbundRaw values were last collected.,"In ISO 8601 format: yyyy-mm-ddThh:mm:ss where T indicates that a time value follows. E.g., for the 4th of August 1990, at 02:15:20: 1990-08-04T02:15:20 Unknown information can be coded as NA, e.g.: 1990-08-NATNA:NA:NA"
+*OriginalTaxonName,The original provided taxon name.,
+Genus,The - standardised - genus of the observed species.,
+Species,The - standardised - scientific name of the observed species (if available).,
+*Source,The source of the dataset.,"E.g., a published paper, a website, as yet unpublished data etc."
+DOI,The DOI of the dataset source (where available).,
+CollectedBy,The person or organization that collected the dataset.,"E.g, X County Mosquito Abatement District"
+Notes,Other useful information.,
+*SubmittedBy,The full name of the user who uploaded the dataset.,
