@@ -1,0 +1,78 @@
+---
+title: "VecDyn Development Timeline"
+author: "Matthew J Watts"
+date: "21 March 2017"
+output: html_document
+---
+## VecDyn Development Timeline  
+
+## March - April 2017  
+
+> **Develop basic VecDyn front-end (GUI/Web Interface)**  
+Set up VecDyn to query existing database using taxonomic & geographic information
+Queries should summarize data and provide basic statistics  
+Add option to download queried data in 'csv' format  
+Publish basic version of VecDyn (for internal use)
+
+## May 2017 - June 2017  
+
+>**Produce a document  that summarizes available data in VecDyn database**  
+Document should provide information on animal and plant disease vectors  
+
+> **Further develop front-end**  
+Develop and map front-end workflow  
+Improve look and feel of interface  
+Implement access control mechanism for 'live version' I.e. user and administrative rights  
+Develop comments page where users can leave feedback regarding the site (for consultation)  
+Write queries for automatic upload of data from 'csv' files (admin use only)  
+Test VecDyn - e.g. add new new data sets and document any problems encountered
+
+## July 2017  
+
+> **Prepare VecDyn V1 for VectorBite conference**   
+Publish VecDyn V1  
+Prepare basic user documentation (e.g. provide example of downloading a data set and producing a time series in R )  
+Open a consultation for users to provide feedback on the functionality & usability of web interface/database (comments can be left on comments page)
+
+## August to December 2017  
+
+>**Develop VecDyn V2 (front-end and back-end)**  
+Collect and consider results of consultation  
+Implement any necessary or desired changes to front-end and back-end   
+Develop procedures for data upload - for administrative staff and users  
+Develop and implement advanced queries i.e. web app produces time series charts on query  
+Prepare documentation  
+Transfer all existing data from VecDyn V1 to VecDyn V2  
+Develop datase feedback system - users can rate and leave feedback on a dataset
+
+## December 2017  
+>**Publish VecDyn V2**  
+Promote VecDyn release and disseminate promotional materials
+
+## From January 2018 onward    
+>**Maintenance and revisions**  
+Implement any necessary changes to front end, back end and documentation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
