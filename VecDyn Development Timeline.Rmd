@@ -3,7 +3,7 @@
 ## March - April 2017  
 
 > **Develop basic VecDyn front-end (GUI/Web Interface)**  
-Set up VecDyn to query existing database using taxonomic & geographic information
+Set up VecDyn to query existing database using taxonomic & geographic information  
 Queries should summarize data and provide basic statistics  
 Add option to download queried data in 'csv' format  
 Publish basic version of VecDyn (for internal use)
