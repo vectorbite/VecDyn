@@ -7,7 +7,7 @@ Instructions
 ------------
 *How to submit data, minimal requirements and procedures*
 
-> In order to submit data to the VecDyn database (*temporary procedures*)  
+In order to submit data to the VecDyn database (*temporary procedures*)  
 1. Fill in the template, making sure all the requirements are met (*see template description*).  
 2. Go to https://vectorbyte.org and sign up / log in to access appropriate pages.  
 3. Navigate to 'submit data' via the 'submissions' button.   
@@ -27,11 +27,12 @@ We'll contact you once your data has been incorporated into the database.
 <br/>
 
 VecDyn Template Description
--------------------
+---------------------------
  
 <br/>   
 
-###Data Series Information
+Data Series Information
+------------------------
 *The following information should be supplied separately when a data set is submitted*
 
 
@@ -49,7 +50,8 @@ ORCID|String|Optional|ORCID code|A digital identifier which provides researchers
 keywords|String|Optional|Keywords for web searches|
 <br/>
 
-####Meta Data (part of the VecDyn data collection template)
+Meta Data (part of the VecDyn data collection template)
+-------------------------------------------------------
 *The data entered into these fields should be repeated for each row/observation in the VecDyn data collection template*
 <br/>
 
@@ -76,7 +78,8 @@ value_transform|String|Optional|Note if the original values have been transforme
  
  
 
-####Time Series Data  
+Time Series Data
+----------------
 *Data to be displayed in Time-Series, each row represents a seperate observation in the VecDyn template*
 
 Field Name | Format|Requirement| Details   | Additional Notes
