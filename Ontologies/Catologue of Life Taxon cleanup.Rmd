@@ -1,0 +1,169 @@
+---
+title: "Catologue of Life Taxon cleanup"
+author: "Matthew watts"
+date: "7 February 2018"
+output:
+  word_document: default
+  html_document: default
+---
+
+**This following R script is used to cleanup and organise The Catalogue of Life's database for use with the VectorBite databases. For more information about the The Catalogue of Life database please visit http://www.catalogueoflife.org/. **
+
+In order to run this code in R, you to install and load R's 'Tidyverse' package (see https://www.tidyverse.org/) . 
+
+```{r}
+
+library(tidyverse)
+
+```
+
+
+
+#Load in the cat of life data set
+```{r}
+taxa <- read_delim("C:/Users/matt/OneDrive - Imperial College London/DataSets/Taxonomy/CatelogueOfLife/archive-kingdom-animalia-bl3/taxa.txt", 
+     "\t", escape_double = FALSE, col_types = cols(acceptedNameUsageID = col_character(), 
+         datasetID = col_character(), parentNameUsageID = col_character(), 
+         taxonID = col_character()), trim_ws = TRUE)
+
+```
+
+
+#filter the cat of life data set to remove all other entries other than accepted name
+
+
+```{r taxa-select&filter}
+
+taxa_processed <- 
+  taxa %>%
+    filter(taxonomicStatus == "accepted name")  %>%
+  select(taxonID, kingdom, phylum, class, order, superfamily, family, genus, order, specificEpithet)
+  
+#rm(taxa_clean, taxa)
+
+```
+
+**Create 
+```{r}
+kingdom <- 
+   taxa_processed %>%
+   select(kingdom) %>%
+   distinct(kingdom) %>%
+  rename(name = kingdom)
+kingdom$kingdom_ID <- seq.int(nrow(kingdom))
+
+write.csv(kingdom, file = "kingdom.csv", row.names = FALSE)
+
+```
+
+#Get unique values kingdom-phylum - for looks ups in VBOP 
+
+```{r}
+phylum <- 
+   taxa_processed %>%
+   select(phylum, kingdom) %>%
+   na.omit() %>%
+   distinct(phylum, kingdom) %>%
+   rename(name = phylum, kingdom_name = kingdom)
+
+phylum$phylum_ID <- seq.int(nrow(phylum))
+phylum <- dplyr::left_join(phylum, kingdom, by = c('kingdom_name' = 'name'))
+phylum <- select(phylum, name, phylum_ID, kingdom_ID)
+
+write.csv(phylum, file = "phylum.csv",row.names = FALSE)
+```
+
+
+#Get unique values phylum-class - for looks ups in VBOP 
+
+```{r}
+ 
+class <- 
+   taxa_processed %>%
+   select(class, phylum) %>%
+   na.omit() %>%
+   distinct(class, phylum) %>%
+   rename(name = class, phylum_name = phylum) 
+class$class_ID <- seq.int(nrow(class))
+class <- dplyr::left_join(class, phylum, by = c('phylum_name' = 'name'))
+class <- select(class, name, class_ID, phylum_ID)
+write.csv(class, file = "class.csv", row.names = FALSE)
+```
+
+
+#Get unique values class-order - for looks ups in VBOP 
+
+
+```{r}
+order <- 
+  taxa_processed %>%
+  select(order, class) %>%
+  na.omit() %>%
+  distinct(order, class) %>%
+  rename(name = order, class_name = class) 
+order$order_ID <- seq.int(nrow(order))
+order <- dplyr::left_join(order, class, by = c('class_name' = 'name'))
+order <- select(order, name, order_ID, class_ID)
+write.csv(order, file = "order.csv", row.names = FALSE)
+```
+
+
+#Get unique values order_family - for looks ups in VBOP 
+
+
+```{r}
+family <- 
+  taxa_processed %>%
+  select(family, order) %>%
+  na.omit() %>%
+  distinct(family,order) %>%
+rename(name = family, order_name = order) 
+family$family_ID <- seq.int(nrow(family))
+family <- dplyr::left_join(family, order, by = c('order_name' = 'name'))
+family <- select(family, name, family_ID, order_ID)
+write.csv(family , file = "family.csv" , row.names = FALSE)
+```
+
+
+#Get unique values family_genus - for looks ups in VBOP 
+
+
+```{r}
+genus <- 
+  taxa_processed %>%
+  select(genus,family) %>%
+  na.omit() %>%
+  distinct(genus, family) %>% 
+  rename(name = genus, family_name = family) 
+genus$genus_ID <- seq.int(nrow(genus))
+genus <- dplyr::left_join(genus, family, by = c('family_name' = 'name'))
+genus <- select(genus, name, genus_ID, family_ID)
+
+
+write.csv(genus, file = "genus.csv", row.names = FALSE)
+```
+
+#Get unique values genus_species - for looks ups in VBOP 
+
+
+```{r}
+species <- 
+  taxa_processed %>%
+  select(taxonID, genus, specificEpithet) %>%
+  cbind(genus2=rep(taxa_processed$genus)) %>%
+  rename(genus_name = genus) %>%
+  unite_("name", c("genus2","specificEpithet"), sep = " ")
+species <- dplyr::left_join(species, genus, by = c('genus_name' = 'name'))
+species <- select(species, name, taxonID, genus_ID)
+write.csv(species, file = "species.csv", row.names = FALSE)
+
+```
+
+
+
+
+ 
+ 
+
+
+
