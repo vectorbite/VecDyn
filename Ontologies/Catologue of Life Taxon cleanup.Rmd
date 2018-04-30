@@ -11,6 +11,9 @@ output:
 
 In order to run this code in R, you to install and load R's 'Tidyverse' package (see https://www.tidyverse.org/) . 
 
+
+###Note this currently produces duplicates, need to fix######
+
 ```{r}
 
 library(tidyverse)
@@ -28,6 +31,12 @@ taxa <- read_delim("C:/Users/matt/OneDrive - Imperial College London/DataSets/Ta
 
 ```
 
+```{r}
+
+head(taxa)
+
+```
+
 
 #filter the cat of life data set to remove all other entries other than accepted name
 
@@ -36,21 +45,35 @@ taxa <- read_delim("C:/Users/matt/OneDrive - Imperial College London/DataSets/Ta
 
 taxa_processed <- 
   taxa %>%
-    filter(taxonomicStatus == "accepted name")  %>%
-  select(taxonID, kingdom, phylum, class, order, superfamily, family, genus, order, specificEpithet)
+    filter(taxonomicStatus == "accepted name" & phylum == "Arthropoda")  %>%
+  select(taxonID, scientificName, kingdom, phylum, class, order, superfamily, family, genericName, genus, subgenus, specificEpithet, infraspecificEpithet)
+
+taxa_processed <-
+  taxa_processed %>%
+  cbind(genus2=rep(taxa_processed$genus)) %>%
+  cbind(specificEpithet2=rep(taxa_processed$specificEpithet)) %>%
+  unite_("species", c("genus2","specificEpithet2"), sep = " ")
   
+taxa_processed <- distinct(taxa_processed)
+write.csv(taxa_processed, file = "CATLIFE.csv", row.names = FALSE)
 #rm(taxa_clean, taxa)
 
 ```
 
-**Create 
+
+```{r}
+head(taxa_processed)
+
+```
+
+
 ```{r}
 kingdom <- 
    taxa_processed %>%
    select(kingdom) %>%
    distinct(kingdom) %>%
   rename(name = kingdom)
-kingdom$kingdom_ID <- seq.int(nrow(kingdom))
+kingdom$kingdom_id <- seq.int(nrow(kingdom))
 
 write.csv(kingdom, file = "kingdom.csv", row.names = FALSE)
 
@@ -66,9 +89,10 @@ phylum <-
    distinct(phylum, kingdom) %>%
    rename(name = phylum, kingdom_name = kingdom)
 
-phylum$phylum_ID <- seq.int(nrow(phylum))
-phylum <- dplyr::left_join(phylum, kingdom, by = c('kingdom_name' = 'name'))
-phylum <- select(phylum, name, phylum_ID, kingdom_ID)
+phylum$phylum_id <- seq.int(nrow(phylum))
+phylum <- dplyr::inner_join(phylum, kingdom, by = c('kingdom_name' = 'name'))
+phylum <- select(phylum, name, phylum_id, kingdom_id)
+
 
 write.csv(phylum, file = "phylum.csv",row.names = FALSE)
 ```
@@ -84,9 +108,9 @@ class <-
    na.omit() %>%
    distinct(class, phylum) %>%
    rename(name = class, phylum_name = phylum) 
-class$class_ID <- seq.int(nrow(class))
-class <- dplyr::left_join(class, phylum, by = c('phylum_name' = 'name'))
-class <- select(class, name, class_ID, phylum_ID)
+class$class_id <- seq.int(nrow(class))
+class <- dplyr::inner_join(class, phylum, by = c('phylum_name' = 'name'))
+class <- select(class, name, class_id, phylum_id)
 write.csv(class, file = "class.csv", row.names = FALSE)
 ```
 
@@ -101,9 +125,9 @@ order <-
   na.omit() %>%
   distinct(order, class) %>%
   rename(name = order, class_name = class) 
-order$order_ID <- seq.int(nrow(order))
-order <- dplyr::left_join(order, class, by = c('class_name' = 'name'))
-order <- select(order, name, order_ID, class_ID)
+order$order_id <- seq.int(nrow(order))
+order <- dplyr::inner_join(order, class, by = c('class_name' = 'name'))
+order <- select(order, name, order_id, class_id)
 write.csv(order, file = "order.csv", row.names = FALSE)
 ```
 
@@ -118,10 +142,10 @@ family <-
   na.omit() %>%
   distinct(family,order) %>%
 rename(name = family, order_name = order) 
-family$family_ID <- seq.int(nrow(family))
-family <- dplyr::left_join(family, order, by = c('order_name' = 'name'))
-family <- select(family, name, family_ID, order_ID)
-write.csv(family , file = "family.csv" , row.names = FALSE)
+family$family_id <- seq.int(nrow(family))
+family <- dplyr::inner_join(family, order, by = c('order_name' = 'name'))
+family <- select(family, name, family_id, order_id)
+#write.csv(family , file = "family.csv" , row.names = FALSE)
 ```
 
 
@@ -135,9 +159,10 @@ genus <-
   na.omit() %>%
   distinct(genus, family) %>% 
   rename(name = genus, family_name = family) 
-genus$genus_ID <- seq.int(nrow(genus))
+genus$id <- seq.int(nrow(genus))
 genus <- dplyr::left_join(genus, family, by = c('family_name' = 'name'))
-genus <- select(genus, name, genus_ID, family_ID)
+genus <- select(genus, name, id.x, id.y)
+genus <- rename(genus, id = 'id.x', taxon_family ='id.y')
 
 
 write.csv(genus, file = "genus.csv", row.names = FALSE)
@@ -147,15 +172,16 @@ write.csv(genus, file = "genus.csv", row.names = FALSE)
 
 
 ```{r}
-species <- 
+taxon <- 
   taxa_processed %>%
   select(taxonID, genus, specificEpithet) %>%
   cbind(genus2=rep(taxa_processed$genus)) %>%
   rename(genus_name = genus) %>%
   unite_("name", c("genus2","specificEpithet"), sep = " ")
-species <- dplyr::left_join(species, genus, by = c('genus_name' = 'name'))
-species <- select(species, name, taxonID, genus_ID)
-write.csv(species, file = "species.csv", row.names = FALSE)
+taxon <- dplyr::left_join(taxon, genus, by = c('genus_name' = 'name'))
+taxon <- select(taxon, name, taxonID, id)
+taxon <- rename(taxon, taxon_genus = 'id')
+write.csv(taxon, file = "taxon.csv", row.names = FALSE)
 
 ```
 
